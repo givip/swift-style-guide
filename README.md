@@ -4,7 +4,7 @@ Make sure to read [Apple's API Design Guidelines](https://swift.org/documentatio
 
 Specifics from these guidelines + additional remarks are mentioned below.
 
-This guide was last updated for Swift 4.0 on February 14, 2018.
+This guide was last updated for Swift 5.1 on March 1, 2020.
 
 ## Table Of Contents
 
@@ -410,7 +410,7 @@ myFunctionWithEscapingClosure() { [weak self] (error) -> Void in
 
     // or you can do this
 
-    guard let strongSelf = self else {
+    guard let self = self else {
         return
     }
 
@@ -535,7 +535,7 @@ You can override existing operators to support new types (especially `==`). Howe
 
 * **3.4.2** Since `switch` cases in Swift break by default, do not include the `break` keyword if it is not needed.
 
-* **3.4.3** The `case` statements should line up with the `switch` statement itself as per default Swift standards.
+* **3.4.3** The `case` statements should have intendation with the `switch` statement itself as per default XCode standards (Ctrl + I).
 
 * **3.4.4** When defining a case that has an associated value, make sure that this value is appropriately labeled as opposed to just types (e.g. `case hunger(hungerLevel: Int)` instead of `case hunger(Int)`).
 
@@ -548,12 +548,12 @@ enum Problem {
 
 func handleProblem(problem: Problem) {
     switch problem {
-    case .attitude:
-        print("At least I don't have a hair problem.")
-    case .hair:
-        print("Your barber didn't know when to stop.")
-    case .hunger(let hungerLevel):
-        print("The hunger level is \(hungerLevel).")
+        case .attitude:
+            print("At least I don't have a hair problem.")
+        case .hair:
+            print("Your barber didn't know when to stop.")
+        case .hunger(let hungerLevel):
+            print("The hunger level is \(hungerLevel).")
     }
 }
 ```
@@ -565,10 +565,10 @@ func handleProblem(problem: Problem) {
 ```swift
 func handleDigit(_ digit: Int) throws {
     switch digit {
-    case 0, 1, 2, 3, 4, 5, 6, 7, 8, 9:
-        print("Yes, \(digit) is a digit!")
-    default:
-        throw Error(message: "The given number was not a digit.")
+        case 0, 1, 2, 3, 4, 5, 6, 7, 8, 9:
+            print("Yes, \(digit) is a digit!")
+        default:
+            throw Error(message: "The given number was not a digit.")
     }
 }
 ```
@@ -667,6 +667,16 @@ var computedProperty: String  {
 ```swift
 class PirateManager {
     static let shared = PirateManager()
+
+    /* ... */
+}
+
+//OR with lazy initialization
+
+class PirateManager {
+    static let shared = {
+        PirateManager()
+    }()
 
     /* ... */
 }
@@ -953,7 +963,7 @@ Guidelines:
 
 * **4.1.1** 160 character column limit (like the rest of the code).
 
-* **4.1.2** Even if the doc comment takes up one line, use block (`/** */`).
+* **4.1.2** If the doc comment takes one line use three slashes (`///`), if more, use block (`/** */`).
 
 * **4.1.3** Do not prefix each additional line with a `*`.
 
