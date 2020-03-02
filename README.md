@@ -23,6 +23,8 @@ This guide was last updated for Swift 5.1 on March 1, 2020.
         - [3.9 Arrays](#39-arrays)
         - [3.10 Error Handling](#310-error-handling)
         - [3.11 Using `guard` Statements](#311-using-guard-statements)
+        - [3.12 Using `for where` loops](#312-using-for-where-loops)
+        - [3.13 Using `fallthrough` in switch Statements](#313-using-fallthrough-in-switch-statements)
     - [4. Documentation/Comments](#4-documentationcomments)
         - [4.1 Documentation](#41-documentation)
         - [4.2 Other Commenting Guidelines](#42-other-commenting-guidelines)
@@ -949,6 +951,51 @@ guard let thingOne = thingOne else {
 guard let thingOne = thingOne else { return }
 ```
 
+### 3.12 Using `for where` loops
+
+When the entirety of a for loop’s body would be a single if block testing a condition of the element, the test is placed in the where clause of the for statement instead.
+
+```swift
+// PREFERRED
+for item in collection where item.hasProperty {
+    // ...
+}
+
+// NOT PREFERRED
+for item in collection {
+    if item.hasProperty {
+        // ...
+    }
+}
+```
+
+### 3.13 Using `fallthrough` in switch Statements
+
+When multiple cases of a switch would execute the same statements, the case patterns are combined into ranges or comma-delimited lists. Multiple case statements that do nothing but fallthrough to a case below are not allowed.
+
+```swift
+// PREFERRED
+switch value {
+case 1: print("one")
+case 2...4: print("two to four")
+case 5, 7: print("five or seven")
+default: break
+}
+
+// NOT PREFERRED
+switch value {
+case 1: print("one")
+case 2: fallthrough
+case 3: fallthrough
+case 4: print("two to four")
+case 5: fallthrough
+case 7: print("five or seven")
+default: break
+}
+```
+In other words, there is never a case whose body contains only the fallthrough statement. Cases containing additional statements which then fallthrough to the next case are permitted.
+
+
 ## 4. Documentation/Comments
 
 ### 4.1 Documentation
@@ -959,11 +1006,13 @@ After writing a doc comment, you should option click the function/property/class
 
 Be sure to check out the full set of features available in Swift's comment markup [described in Apple's Documentation](https://developer.apple.com/library/tvos/documentation/Xcode/Reference/xcode_markup_formatting_ref/Attention.html#//apple_ref/doc/uid/TP40016497-CH29-SW1).
 
+The recommended way to write documentation comments in Xcode is to place the text cursor on the declaration and press Command + Option + /. This will automatically generate the correct format with placeholders to be filled in.
+
 Guidelines:
 
 * **4.1.1** 160 character column limit (like the rest of the code).
 
-* **4.1.2** If the doc comment takes one line use three slashes (`///`), if more, use block (`/** */`).
+* **4.1.2** If the doc comment takes one line use three slashes (`///`) before each line.
 
 * **4.1.3** Do not prefix each additional line with a `*`.
 
@@ -971,13 +1020,11 @@ Guidelines:
 
 ```swift
 class Human {
-    /**
-     This method feeds a certain food to a person.
-
-     - parameter food: The food you want to be eaten.
-     - parameter person: The person who should eat the food.
-     - returns: True if the food was eaten by the person; false otherwise.
-    */
+    /// This method feeds a certain food to a person.
+    /// - Parameters:
+    ///   - food: The food you want to be eaten.
+    ///   - person: The person who should eat the food.
+    /// - Returns: True if the food was eaten by the person; false otherwise.
     func feed(_ food: Food, to person: Human) -> Bool {
         // ...
     }
@@ -989,31 +1036,29 @@ class Human {
 * **4.1.6** For complicated classes, describe the usage of the class with some potential examples as seems appropriate. Remember that markdown syntax is valid in Swift's comment docs. Newlines, lists, etc. are therefore appropriate.
 
 ```swift
-/**
- ## Feature Support
-
- This class does some awesome things. It supports:
-
- - Feature 1
- - Feature 2
- - Feature 3
-
- ## Examples
-
- Here is an example use case indented by four spaces because that indicates a
- code block:
-
-     let myAwesomeThing = MyAwesomeClass()
-     myAwesomeThing.makeMoney()
-
- ## Warnings
-
- There are some things you should be careful of:
-
- 1. Thing one
- 2. Thing two
- 3. Thing three
- */
+/// ## Feature Support
+///
+/// This class does some awesome things. It supports:
+///
+/// - Feature 1
+/// - Feature 2
+/// - Feature 3
+///
+/// ## Examples
+///
+/// Here is an example use case indented by four spaces because that indicates a
+/// code block:
+///
+/// let myAwesomeThing = MyAwesomeClass()
+/// myAwesomeThing.makeMoney()
+///
+/// ## Warnings
+///
+/// There are some things you should be careful of:
+///
+/// 1. Thing one
+/// 2. Thing two
+/// 3. Thing three
 class MyAwesomeClass {
     /* ... */
 }
@@ -1022,10 +1067,9 @@ class MyAwesomeClass {
 * **4.1.7** When mentioning code, use code ticks - \`
 
 ```swift
-/**
- This does something with a `UIViewController`, perchance.
- - warning: Make sure that `someValue` is `true` before running this function.
- */
+
+/// This does something with a `UIViewController`, perchance.
+/// - warning: Make sure that `someValue` is `true` before running this function.
 func myFunction() {
     /* ... */
 }
