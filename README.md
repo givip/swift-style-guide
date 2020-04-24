@@ -154,9 +154,9 @@ someFunctionWithABunchOfArguments(
 
 ```swift
 // PREFERRED
-let firstCondition = x == firstReallyReallyLongPredicateFunction()
-let secondCondition = y == secondReallyReallyLongPredicateFunction()
-let thirdCondition = z == thirdReallyReallyLongPredicateFunction()
+let firstCondition = (x == firstReallyReallyLongPredicateFunction())
+let secondCondition = (y == secondReallyReallyLongPredicateFunction())
+let thirdCondition = (z == thirdReallyReallyLongPredicateFunction())
 if firstCondition && secondCondition && thirdCondition {
     // do something
 }
