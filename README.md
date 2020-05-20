@@ -25,6 +25,7 @@ This guide was last updated for Swift 5.1 on March 1, 2020.
         - [3.11 Using `guard` Statements](#311-using-guard-statements)
         - [3.12 Using `for where` loops](#312-using-for-where-loops)
         - [3.13 Using `fallthrough` in switch Statements](#313-using-fallthrough-in-switch-statements)
+        - [3.14 Attributes (`@dynamicCallable`, `@objc`, `@discardableResult`, `@frozen`, etc)](#314-attributes-dynamicCallable-objc-discardableResult-frozen-etc)
     - [4. Documentation/Comments](#4-documentationcomments)
         - [4.1 Documentation](#41-documentation)
         - [4.2 Other Commenting Guidelines](#42-other-commenting-guidelines)
@@ -168,6 +169,7 @@ if x == firstReallyReallyLongPredicateFunction()
     // do something
 }
 ```
+
 
 ## 2. Naming
 
@@ -995,6 +997,23 @@ default: break
 }
 ```
 In other words, there is never a case whose body contains only the fallthrough statement. Cases containing additional statements which then fallthrough to the next case are permitted.
+
+### 3.14 Attributes (`@dynamicCallable`, `@objc`, `@discardableResult`, `@frozen`, etc)
+
+Such attributes should be places in separate line in code, aligned with next statement
+
+```swift
+// PREFERRED
+@objc
+func getData() -> Data {
+    //Some work
+}
+
+// NOT PREFERRED
+@objc func getData() -> Data {
+    //Some work
+}
+```
 
 
 ## 4. Documentation/Comments
